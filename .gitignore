@@ -1,0 +1,3 @@
+server/application/config/database.php
+server/application/views/*
+!errors
