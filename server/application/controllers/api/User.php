@@ -43,6 +43,17 @@ class User extends CI_Controller {
 		return;
 	}
 
+	//注销
+    public function signout()
+	{
+		$this->load->library('session');
+		$this->session->unset_userdata('signup_code');
+        $res['code'] = 1;
+        $res['msg'] = '注销成功';
+		echo json_encode($res);
+		return;
+	}
+    
 	//校验用户名
 	public function hasuser()
 	{
