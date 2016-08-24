@@ -29,7 +29,7 @@ class Auth_model extends CI_Model {
         'role'=>$user['role'],
         'level'=>$user['level'],
         'status'=>$user['status'],
-        'ip'=> long2ip($this->input->ip_address()),
+        'ip'=> $this->input->ip_address(),
         'ctime'=>time()
        );
       $this->session->set_userdata('userinfo',$data);
@@ -51,11 +51,11 @@ class Auth_model extends CI_Model {
       $num = intval(substr(time() . rand(), -8));
       $data = array(
         'uid'=>$num,
-        'name'=>'\u6e38\u5ba2'.$num,
+        'name'=>'游客'.$num,
         'role'=>'-1',
         'level'=>'0',
         'status'=>'1',
-        'ip'=> long2ip($this->input->ip_address()),
+        'ip'=> $this->input->ip_address(),
         'ctime'=>time()
        );
       $this->session->set_userdata('guestinfo',$data);

@@ -11,36 +11,37 @@ class Chat_model extends CI_Model {
       parent::__construct();   
     }
 
-    function get($limit = 30)
+    function get($utime = 0,$limit = 30)
     {
 
       $res = $this->db->from($this->tbl)
            ->select('id,uid,name,content,role,level,utime')
            ->where('status','1')
+           ->where('utime >',$utime)
            ->order_by('utime','desc')
            ->limit($limit)
            ->get()->result_array();
       return $res;
     }
 
-    function getAll($limit = 100)
+    function getAll($utime = 0,$limit = 100)
     {
 
       $res = $this->db->from($this->tbl)
            ->select('id,uid,name,content,role,level,utime')
            ->where('status','1')
            ->or_where('status','0')
+           ->where('utime >',$utime)
            ->order_by('utime','desc')
            ->limit($limit)
            ->get()->result_array();
       return $res;
     }
 
-    function save()
+    function save($content = '')
     { 
-      $req = $this->input->post();
       $this->load->helper('string');
-      $content = trim(html2text($req['content']));
+      $content = trim(html2text($content));
       $res['code'] ='0';
       if($content == '')
       {
@@ -54,7 +55,7 @@ class Chat_model extends CI_Model {
       {
         $this->load->model('Auth_model','auth');
         $user = $this->auth->userinfo();
-        $status
+        $status = $user['role'] != 1 ? 0 : 1; 
         $now = time();
         $chat = array(
           'uid' => $user['uid'],
@@ -65,14 +66,13 @@ class Chat_model extends CI_Model {
           'utime'=>$now,
           'ctime'=>$now,
           'ip'=>long2ip($this->input->ip_address()),
-          'status'=>
+          'status'=>$status
           );
-        $this->db->insert($this->tbl, $data);
+        $this->db->insert($this->tbl, $chat);
         $res['code'] ='1';
         $res['msg'] ='内容发布成功';
       }
-      echo json_encode($res);
-      return;
+      return $res;
 
     }
 
