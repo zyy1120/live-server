@@ -55,7 +55,7 @@ class User_model extends CI_Model {
             $data = $this->form_validation->validation_data;
             if($this->has_user($data['username']) == true)
             {
-               $res['msg'] = '用户名已存在';
+               $res['msg'] = array('username'=>'用户名已存在');
             }
             else
             {  
@@ -74,7 +74,7 @@ class User_model extends CI_Model {
                if($this->db->insert($this->tbl, $user) > 0)
                 {  
                    $res['code'] = 1;
-                   $res['msg'] ='创建成功';
+                   $res['msg'] =array('*'=>'创建成功');
                 }
             }
         }
@@ -126,24 +126,24 @@ class User_model extends CI_Model {
                 $result = $results[0];
                 if(count($results)>1)
                 {
-                    $res['msg'] ='数据异常';
+                    $res['msg'] = array('*'=>'数据异常');
                 }
                 else if($result['password'] != $user['password'])
                 {   
-                    $res['msg'] ='密码不正确';
+                    $res['msg'] = array('password'=>'密码不正确');
                 }
                 else
                 {
                     $this->load->model('Auth_model');
                     $this->Auth_model->set_user($result);
                     $res['code'] = '1'; 
-                    $res['msg'] ='认证通过';
+                    $res['msg'] =array('*'=>'认证通过');
                 }
               
             }
             else
             {  
-               $res['msg'] ='用户名不存在';
+               $res['msg'] = array('username'=>'用户名不存在');
             }
         }
         return $res;
