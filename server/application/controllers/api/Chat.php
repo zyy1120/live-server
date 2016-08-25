@@ -38,10 +38,39 @@ class Chat extends CI_Controller {
         // $this->output->enable_profiler(TRUE);
 		$this->load->database();
 		$this->load->library('session');
-        $this->load->model('Chat_model','chat');
-        $content = $this->input->get('content');
-        $res = $this->chat->save($content);
-         echo json_encode($res);
+    $this->load->model('Chat_model','chat');
+    $content = $this->input->post('content');
+    $res = $this->chat->save($content);
+    echo json_encode($res);
 	}
+
+  public function remove()
+  {
+    $this->load->database();
+    $this->load->library('session');
+    $this->load->model('Chat_model','chat');
+    $id = $this->input->post('id');
+     $res = array(
+              'code' => 1,
+              'msg' => '删除成功'
+              );
+    $this->chat->remove($id);
+     echo json_encode($res);
+  }
+
+  public function activate()
+  {
+    $this->load->database();
+    $this->load->library('session');
+    $this->load->model('Chat_model','chat');
+    $id = $this->input->post('id');
+    $this->chat->activate($id);
+    $res = array(
+              'code' => 1,
+              'msg' => '审核通过'
+            );
+     echo json_encode($res);
+  }
+  
    	
 }

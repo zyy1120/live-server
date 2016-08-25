@@ -47,7 +47,7 @@ class User extends CI_Controller {
     public function signout()
 	{
 		$this->load->library('session');
-		$this->session->unset_userdata('signup_code');
+		$this->session->unset_userdata('userinfo');
         $res['code'] = 1;
         $res['msg'] = '注销成功';
 		echo json_encode($res);

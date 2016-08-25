@@ -28,10 +28,12 @@ class Chat_model extends CI_Model {
     {
 
       $res = $this->db->from($this->tbl)
-           ->select('id,uid,name,content,role,level,utime')
-           ->where('status','1')
-           ->or_where('status','0')
+           ->select('id,uid,name,content,role,level,status,utime')
            ->where('utime >',$utime)
+           ->group_start()
+              ->where('status','1')
+              ->or_where('status','0')
+           ->group_end()
            ->order_by('utime','desc')
            ->limit($limit)
            ->get()->result_array();
@@ -78,14 +80,14 @@ class Chat_model extends CI_Model {
 
     function remove($id)
     {
-      $role = array('status','-1');
+      $role = array('status'=>'-1','utime'=>time());
       $this->db->where('id',$id)
            ->update($this->tbl, $role);
     }
 
     function activate($id)
     {
-      $role = array('status','1');
+      $role = array('status'=>'1','utime'=>time());
       $this->db->where('id',$id)
            ->update($this->tbl, $role);
     }
