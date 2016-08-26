@@ -5,7 +5,14 @@ class User extends CI_Controller {
     
     //登陆
 	public function signin()
-	{
+	{   
+		$this->load->model('Auth_model');
+		if($this->Auth_model->is_sign() ==true)
+		{    
+			$res= array('code'=>0,'msg'=>'请不要重复登陆');
+             echo json_encode($res);
+		     return;
+		};
 		$this->load->database();
 		$this->load->model('User_model','user');
 		$user = array(

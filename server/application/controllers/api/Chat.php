@@ -46,6 +46,16 @@ class Chat extends CI_Controller {
 
   public function remove()
   {
+    $this->load->model('Auth_model');
+    if( $this->Auth_model->is_master() !=true )
+    {
+      $res = array(
+            'code' => 0,
+            'msg' => '权限不足'
+          );
+      echo json_encode($res);
+      return;
+    }
     $this->load->database();
     $this->load->library('session');
     $this->load->model('Chat_model','chat');
@@ -59,7 +69,17 @@ class Chat extends CI_Controller {
   }
 
   public function activate()
-  {
+  { 
+    $this->load->model('Auth_model');
+    if( $this->Auth_model->is_master() !=true )
+    {
+      $res = array(
+            'code' => 0,
+            'msg' => '权限不足'
+          );
+      echo json_encode($res);
+      return;
+    }
     $this->load->database();
     $this->load->library('session');
     $this->load->model('Chat_model','chat');
