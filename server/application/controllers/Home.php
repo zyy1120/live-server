@@ -34,7 +34,7 @@ class Home extends CI_Controller {
              'phone' =>'18621718747'
             );
 		 $res = $this->user->create_user($user);
-		 // $res = $this->user->auth($user);
+		 $res = $this->user->auth($user);
 		 var_dump($res);
 	}
 
